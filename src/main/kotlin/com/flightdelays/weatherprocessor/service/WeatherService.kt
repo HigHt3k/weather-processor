@@ -56,7 +56,7 @@ class WeatherService {
     )
 
     @Serializable
-    data class Wind(val speed: Float, val deg: Int)
+    data class Wind(val speed: Float, val deg: Int, val gust: Float)
 
     @Serializable
     data class Weather(val id: Int, val main: String, val description: String, val icon: String)
@@ -84,6 +84,7 @@ class WeatherService {
                 val responseEntity: ResponseEntity<String> = responseDeferred.await()
                 if(responseEntity.statusCode == HttpStatus.OK) {
                     val responseBody = responseEntity.body;
+                    logger.info("Response: $responseBody")
                     val weatherApiResponse = Json.decodeFromString(WeatherApiResponse.serializer(), responseBody!!)
                     processWeatherData(weatherApiResponse)
                     logger.info("Weather data fetched successfully.")
